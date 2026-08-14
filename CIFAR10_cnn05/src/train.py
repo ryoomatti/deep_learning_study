@@ -77,6 +77,7 @@ class ZCAWhitening():
         x = torch.mm(x, self.ZCA_matrix.t())
         x = x.reshape(tuple(size))
         x = x.to("cpu")
+        x = x.float()
         return x
 
 zca = ZCAWhitening(device = "cpu")
@@ -172,7 +173,7 @@ class Dense(nn.Module):
             size = (in_dim, out_dim)
         ).astype('float32')))
 
-        self.b = nn.Parameter(torch.tensor(np.zeros([out_dim])))
+        self.b = nn.Parameter(torch.tensor(np.zeros([out_dim]).astype('float32')))
         self.function = function
 
     def forward(self, x):
@@ -267,7 +268,6 @@ for epoch in range(n_epochs):
         np.mean(losses_valid),
         acc_val/n_val
     ))
-
 
 
 
